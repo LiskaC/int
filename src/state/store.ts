@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
 import globalReducer from './globalSlice'
+import hashReducer from './features/hash/hashSlice'
 
 const rootReducer = combineReducers({
   global: globalReducer,
+  hash: hashReducer,
 })
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {
