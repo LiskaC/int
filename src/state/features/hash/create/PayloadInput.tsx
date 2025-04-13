@@ -1,12 +1,13 @@
 import { FC, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../store'
-import { createProcess } from './hashSlice'
-import { InputField } from '../../../components/InputField'
-import { CreateProcessPayload } from './types'
+import { useAppDispatch, useAppSelector } from '../../../store'
+import { createProcess } from '../slice'
+import { CreateProcessPayload } from '../types'
+import { InputField } from '../../../../components/InputField'
+import { Button } from '../../../../components/Button'
 
 export const PayloadInput: FC = () => {
   const dispatch = useAppDispatch()
-  const loading = useAppSelector((state) => state.hash.loading)
+  const loading = useAppSelector((state) => state.hash.create.loading)
   const [formData, setFormData] = useState<CreateProcessPayload>({
     payload: '',
   })
@@ -71,16 +72,12 @@ const PayloadInputView: FC<Props> = (props) => (
         onChange={props.onChange}
         error={props.error}
       />
-      <button
+      <Button
         type='submit'
+        text={props.cta}
         disabled={props.disabled}
-        aria-label='create hash'
-        aria-live='polite'
-        className={`bg-blue-700 px-3 py-2 rounded-sm text-amber-50 hover:bg-blue-800
-          active:bg-blue-500 disabled:bg-blue-400 disabled:cursor-not-allowed`}
-      >
-        {props.cta}
-      </button>
+        ariaLabel='create hash'
+      />
     </form>
   </section>
 )

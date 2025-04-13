@@ -8,7 +8,7 @@ import { Outlet } from 'react-router-dom'
  */
 export const Layout: FC = () => (
   <div id='layout'>
-    <main className='flex flex-col items-center justify-center min-h-screen bg-zinc-50'>
+    <main className='flex flex-col items-center min-h-screen bg-zinc-50'>
       <Outlet />
     </main>
   </div>

@@ -28,8 +28,8 @@ export const InputField: FC<Props> = (props) => (
       onChange={props.onChange}
       aria-invalid={props.error ? 'true' : 'false'}
       aria-describedby={props.error ? `${props.id}-error` : undefined}
-      className={`bg-white border border-zinc-300 shadow-xs mt-4 p-2 
-        rounded-sm placeholder:text-green-700`}
+      className='bg-white border border-zinc-300 shadow-xs mt-4 p-2 
+        rounded-sm placeholder:text-green-700'
     />
     {props.error && (
       <p id={`${props.id}-error`} className='text-red-900 ml-2 text-sm'>

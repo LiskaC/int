@@ -12,9 +12,22 @@ export type CreateProcessResponse = {
   id: string
 }
 
+export type TrackProcessPayload = CreateProcessResponse
+
+export type TrackProcessResponse = {
+  status: 'pending' | 'completed' | 'failed'
+  hash: string | null
+  error: string | null
+  /**
+   * The hashing duration in ms
+   * @example 2165
+   */
+  processingTime: number
+}
+
 export type ErrorResponse = {
   /**
-   * {@example} ['payload must be a string'] or Internal Server Error
+   * @example ['payload must be a string'] or Internal Server Error
    */
   message: string[] | string
   error: string

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithProviders } from '../../src/utils/test-utils'
 import { createProcessResponse, server, serverConfig } from '../mocks/server'
-import { PayloadInput } from '../../src/state/features/hash/PayloadInput'
+import { PayloadInput } from '../../src/state/features/hash/create/PayloadInput'
 import { setupStore } from '../../src/state/store'
 
 describe('PayloadInput', () => {
@@ -35,7 +35,7 @@ describe('PayloadInput', () => {
     const button = screen.getByRole('button', { name: /create hash/i })
     fireEvent.click(button)
 
-    expect(store.getState().hash.payload).toBe('test-input')
+    expect(store.getState().hash.create.data.payload).toBe('test-input')
     await waitFor(() => {
       expect(screen.getByText(/creating.../i)).toBeInTheDocument()
     })
@@ -48,7 +48,7 @@ describe('PayloadInput', () => {
     const button = screen.getByRole('button', { name: /create hash/i })
     fireEvent.click(button)
 
-    expect(store.getState().hash.payload).toBe('')
+    expect(store.getState().hash.create.data.payload).toBe('')
     expect(button).toHaveTextContent(/create hash/i)
   })
 
@@ -88,7 +88,9 @@ describe('PayloadInput', () => {
       // check that the UI reset after the API call
       await screen.findByRole('button', { name: /create hash/i })
 
-      expect(store.getState().hash.id).toBe(createProcessResponse.id)
+      expect(store.getState().hash.create.data.id).toBe(
+        createProcessResponse.id
+      )
     })
 
     it('resets on failure', async () => {
@@ -109,8 +111,10 @@ describe('PayloadInput', () => {
       await screen.findByRole('button', { name: /create hash/i })
 
       // check that the call failed
-      expect(store.getState().hash.id).toBe('')
-      expect(store.getState().hash.error).toMatch(/internal server error/i)
+      expect(store.getState().hash.create.data.id).toBe('')
+      expect(store.getState().hash.create.error).toMatch(
+        /internal server error/i
+      )
     })
   })
 })

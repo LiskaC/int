@@ -1,16 +1,26 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import { ProcessCreateStatus } from '../../src/state/features/hash/ProcessCreateStatus'
+import { ProcessCreateStatus } from '../../src/state/features/hash/create/ProcessCreateStatus'
 import { renderWithProviders } from '../../src/utils/test-utils'
-import { HashState } from '../../src/state/features/hash/hashSlice'
+import { HashState } from '../../src/state/features/hash/slice'
 import { setupStore } from '../../src/state/store'
+import { Hash } from 'react-router-dom'
 
 function createInitialHashState(): HashState {
   return {
-    payload: '',
-    id: '',
-    loading: false,
-    error: null,
+    create: {
+      data: {
+        payload: '',
+        id: '',
+      },
+      loading: false,
+      error: null,
+    },
+    track: {
+      data: null,
+      loading: false,
+      error: null,
+    },
   }
 }
 
@@ -24,12 +34,12 @@ describe('ProcessCreateStatus', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('renders error view when there is an error', () => {
-    const errorState = {
+  it('renders error view when there is a create error', () => {
+    const errorState: HashState = {
       ...createInitialHashState(),
-      error: 'An error occurred',
-      payload: 'Some payload',
     }
+    errorState.create.error = 'An error occurred'
+    errorState.create.data.payload = 'Some payload'
     const store = setupStore({ hash: errorState })
 
     renderWithProviders(<ProcessCreateStatus />, { store })
@@ -38,12 +48,12 @@ describe('ProcessCreateStatus', () => {
     expect(screen.getByAltText('error-icon')).toBeInTheDocument()
   })
 
-  it('renders success view when process is successful', () => {
-    const successState = {
+  it('renders success view when create process is successful', () => {
+    const successState: HashState = {
       ...createInitialHashState(),
-      id: '12345',
-      payload: 'Some payload',
     }
+    successState.create.data.payload = 'Some payload'
+    successState.create.data.id = '12345'
     const mockStore = setupStore({ hash: successState })
 
     renderWithProviders(<ProcessCreateStatus />, { store: mockStore })

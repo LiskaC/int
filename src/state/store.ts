@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
 import globalReducer from './globalSlice'
-import hashReducer from './features/hash/hashSlice'
+import hashReducer from './features/hash/slice'
 
 const rootReducer = combineReducers({
   global: globalReducer,

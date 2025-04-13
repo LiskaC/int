@@ -1,21 +1,21 @@
 import { FC } from 'react'
-import { useAppSelector } from '../../store'
+import { useAppSelector } from '../../../store'
 
-import SUCCESS_ICON from 'url:../../../assets/images/success.svg'
-import ERROR_ICON from 'url:../../../assets/images/error.svg'
+import SUCCESS_ICON from 'url:../../../../assets/images/success.svg'
+import ERROR_ICON from 'url:../../../../assets/images/error.svg'
 
 export const ProcessCreateStatus: FC = () => {
-  const hash = useAppSelector((state) => state.hash)
+  const create = useAppSelector((state) => state.hash.create)
 
-  if (!hash.payload || hash.loading) {
+  if (!create.data.payload || create.loading) {
     return null
   }
 
-  if (hash.error) {
+  if (create.error) {
     return (
       <ProcessCreateStatusView
         status='error'
-        text={hash.error}
+        text={create.error}
         img={{ src: ERROR_ICON, alt: 'error-icon' }}
       />
     )
@@ -40,7 +40,11 @@ interface Props {
 }
 
 const ProcessCreateStatusView: FC<Props> = (props) => (
-  <div data-testid='process-create-status' id='process-create-status' className='flex gap-2'>
+  <div
+    data-testid='process-create-status'
+    id='process-create-status'
+    className='flex gap-2'
+  >
     <img src={props.img.src} alt={props.img.alt} className='pt-1 w-4 h-5' />
     <p
       className={`font-bold ${
