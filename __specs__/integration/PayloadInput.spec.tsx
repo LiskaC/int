@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithProviders } from '../../src/utils/test-utils'
 import { createProcessResponse, server, serverConfig } from '../mocks/server'
-import { PayloadInput } from '../../src/state/features/hash/HashInput'
+import { PayloadInput } from '../../src/state/features/hash/PayloadInput'
 import { setupStore } from '../../src/state/store'
 
 describe('PayloadInput', () => {

@@ -1,5 +1,5 @@
 import { useAppSelector } from './state/store'
-import { PayloadInput } from './state/features/hash/HashInput'
+import { PayloadInput } from './state/features/hash/PayloadInput'
 import { ProcessCreateStatus } from './state/features/hash/ProcessCreateStatus'
 
 /**
