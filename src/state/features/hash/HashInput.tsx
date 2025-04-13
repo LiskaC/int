@@ -1,36 +1,44 @@
 import { FC, useState } from 'react'
-import { useAppDispatch } from '../../store'
-import { hashValue } from './hashSlice'
+import { useAppDispatch, useAppSelector } from '../../store'
+import { createProcess } from './hashSlice'
 import { InputField } from '../../../components/InputField'
+import { CreateProcessPayload } from './types'
 
-export const HashInput: FC = () => {
+export const PayloadInput: FC = () => {
   const dispatch = useAppDispatch()
-  const [formData, setFormData] = useState<{ hash: string }>({ hash: '' })
-  const [formError, setFormError] = useState<{ hash: string }>({ hash: '' })
+  const loading = useAppSelector((state) => state.hash.loading)
+  const [formData, setFormData] = useState<CreateProcessPayload>({
+    payload: '',
+  })
+  const [formError, setFormError] = useState<CreateProcessPayload>({
+    payload: '',
+  })
 
   function validate() {
-    // TODO - add validation here
+    // TODO - add validation here for Optional part
     return true
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { value } = e.target
-    // setFormData((prev) => ({ ...prev, [name]: value }))
-    setFormData({ hash: value })
+    setFormData({ payload: value })
   }
 
   function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
 
     if (validate()) {
-      dispatch(hashValue(formData.hash))
+      setFormError({ payload: '' })
+      dispatch(createProcess(formData))
     }
   }
 
   return (
-    <HashInputView
-      hash={formData.hash}
-      formError={formError.hash}
+    <PayloadInputView
+      payload={formData.payload}
+      error={formError.payload}
+      cta={loading ? 'creating...' : 'create hash'}
+      disabled={loading}
       onChange={handleChange}
       onSubmit={handleSubmit}
     />
@@ -38,35 +46,40 @@ export const HashInput: FC = () => {
 }
 
 interface Props {
-  hash: string
-  formError: string
+  payload: string
+  error: string
+  cta: string
+  disabled: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onSubmit: (e: React.SyntheticEvent) => void
 }
 
-const HashInputView: FC<Props> = (props) => (
-  <section role='region'>
-    <h1 className='text-center text-4xl'>Hash Input</h1>
-    <form
-      id='hash-form'
-      onSubmit={props.onSubmit}
-      className='bg-blue-100 p-4 rounded-sm m-8'
-    >
+const PayloadInputView: FC<Props> = (props) => (
+  <section role='region' aria-labelledby='payload-form-header'>
+    <h1 id='payload-form-header' className='text-2xl'>
+      Get your hash
+    </h1>
+    <form id='payload-form' onSubmit={props.onSubmit}>
       <InputField
-        id='hash-field'
-        label='Input your string to be hashed:'
+        id='payload-input'
+        label='You can hash any arbitrary string. Provide a payload in the input below.'
         type='text'
-        value={props.hash}
-        placeholder='String to hash...'
+        value={props.payload}
+        minLength={1}
+        placeholder='your payload'
         required
         onChange={props.onChange}
-        error={props.formError}
+        error={props.error}
       />
       <button
         type='submit'
-        className='bg-blue-900 p-4 rounded-sm text-amber-50 hover:bg-blue-800 active:bg-blue-400'
+        disabled={props.disabled}
+        aria-label='create hash'
+        aria-live='polite'
+        className={`bg-blue-700 px-3 py-2 rounded-sm text-amber-50 hover:bg-blue-800
+          active:bg-blue-500 disabled:bg-blue-400 disabled:cursor-not-allowed`}
       >
-        Submit
+        {props.cta}
       </button>
     </form>
   </section>

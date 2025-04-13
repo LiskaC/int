@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { HashResponse } from './types'
+import { CreateProcessPayload, CreateProcessResponse } from './types'
 import api from './api'
 
-type HashState = {
-  input: string
+export type HashState = {
+  payload: string
   id: string
   loading: boolean
   error: string | null
 }
 
 const initialState: HashState = {
-  input: '',
+  payload: '',
   id: '',
   loading: false,
   error: null,
@@ -22,31 +22,31 @@ const hashSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(hashValue.pending, (state, action) => {
+      .addCase(createProcess.pending, (state, action) => {
         state.loading = true
         state.error = null
         state.id = ''
-        state.input = action.meta.arg
+        state.payload = action.meta.arg.payload
       })
-      .addCase(hashValue.fulfilled, (state, action) => {
+      .addCase(createProcess.fulfilled, (state, action) => {
         state.loading = false
         state.error = null
         state.id = action.payload.id
       })
-      .addCase(hashValue.rejected, (state, action) => {
+      .addCase(createProcess.rejected, (state, action) => {
         state.loading = false
         state.error =
-          action.error.message || `Failed to hash ${action.meta.arg}`
+          action.error.message ||
+          `Failed to create process for hashing string: ${action.meta.arg.payload}`
       })
   },
 })
 
-export const hashValue = createAsyncThunk<HashResponse, string>(
-  'hash/hashValue',
-  async (arg) => {
-    // TODO - transform stuff here
-    return await api.hash(arg)
-  }
-)
+export const createProcess = createAsyncThunk<
+  CreateProcessResponse,
+  CreateProcessPayload
+>('hash/createProcess', async (args) => {
+  return await api.createProcess(args)
+})
 
 export default hashSlice.reducer

@@ -1,36 +1,24 @@
-import { FC } from 'react'
-import { HashInput } from './state/features/hash/HashInput'
 import { useAppSelector } from './state/store'
-
-interface Props {
-  hash: string
-}
-
-const HashDisplay: FC<Props> = (props) => (
-  <div className='flex gap-2'>
-    <h2 className='font-bold'>Hash value:</h2>
-    <p>{props.hash}</p>
-  </div>
-)
+import { PayloadInput } from './state/features/hash/HashInput'
+import { ProcessCreateStatus } from './state/features/hash/ProcessCreateStatus'
 
 /**
  * The main entry point of the React application
  */
-export function App() {
+function App() {
   const hash = useAppSelector((state) => state.hash)
 
   return (
     <>
-      <main className='flex flex-col items-center gap-4'>
-        <HashInput />
-        <section>
-          {!hash.id || hash.loading ? (
-            <HashDisplay hash='No Hash' />
-          ) : (
-            <HashDisplay hash={hash.id} />
-          )}
-        </section>
-      </main>
+      <div
+        id='hash-page'
+        className='flex flex-col items-left gap-4 shadow-sm shadow-zinc-200 rounded-md p-4 m-8'
+      >
+        <PayloadInput />
+        <ProcessCreateStatus />
+      </div>
     </>
   )
 }
+
+export default App

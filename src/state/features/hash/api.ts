@@ -1,9 +1,15 @@
-import { HashResponse } from './types'
+import {
+  CreateProcessPayload,
+  ErrorResponse,
+  CreateProcessResponse,
+} from './types'
 
 const baseURl = process.env.BASE_URL || 'http://localhost:3000'
 
 // POST /process
-async function hash(payload: string): Promise<HashResponse> {
+async function createProcess(
+  args: CreateProcessPayload
+): Promise<CreateProcessResponse> {
   const endpoint = new URL('/process', baseURl)
 
   const res = await fetch(endpoint, {
@@ -12,22 +18,24 @@ async function hash(payload: string): Promise<HashResponse> {
       'Content-type': 'application/json',
       Accept: 'application/json',
     },
-    body: JSON.stringify({ payload: payload }),
+    // more verbose than JSON.stringify({ payload }), but I probably prefer the
+    // clarity on exactly which args are being passed
+    body: JSON.stringify({ payload: args.payload }),
   })
 
   if (!res.ok) {
-    // TODO - check that the failure response does return like this
-    const data = await res.json()
+    const data: ErrorResponse = await res.json()
     throw new Error(
-      `Failed to hash string: ${payload} with status ${data.message}`
+      `Failed to create process with string: ${args.payload} with message(s):
+      ${data.message}`
     )
   }
 
   return await res.json()
 }
 
-// GET /process/:id
+// GET /process/:ids
 
 export default {
-  hash,
+  createProcess,
 }
