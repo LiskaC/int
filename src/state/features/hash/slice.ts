@@ -87,7 +87,7 @@ export const createProcess = createAsyncThunk<
   return api.createProcess(args)
 })
 
-export const trackProcess = createAsyncThunk<
+const trackProcess = createAsyncThunk<
   TrackProcessResponse,
   void,
   AsyncThunkOptions
@@ -100,5 +100,26 @@ export const trackProcess = createAsyncThunk<
 
   return api.trackProcess({ id })
 })
+
+export const pollProcess = createAsyncThunk<void, void, AsyncThunkOptions>(
+  'hash/pollProcess',
+  async (_, thunkApi) => {
+    let status = 'pending'
+
+    while (status === 'pending') {
+      try {
+        const res = await thunkApi.dispatch(trackProcess()).unwrap()
+        status = res.status
+
+        if (status === 'pending') {
+          await new Promise((resolve) => setTimeout(resolve, 2000))
+        }
+      } catch (err) {
+        console.error('Polling failed:', err)
+        break
+      }
+    }
+  }
+)
 
 export default hashSlice.reducer

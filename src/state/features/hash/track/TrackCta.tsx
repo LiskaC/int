@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store'
-import { trackProcess } from '../slice'
+import { pollProcess } from '../slice'
 import { Button } from '../../../../components/Button'
 
 import LOADER from 'url:../../../../assets/images/loader.svg'
@@ -15,7 +15,7 @@ export const TrackCta: FC = () => {
   }
 
   function handleCLick() {
-    dispatch(trackProcess())
+    dispatch(pollProcess())
   }
 
   return (

@@ -16,8 +16,15 @@ export const PayloadInput: FC = () => {
   })
 
   function validate() {
-    // TODO - add validation here for Optional part
-    return true
+    const isValid = /^[a-zA-Z0-9]+$/.test(formData.payload)
+
+    if (!isValid) {
+      setFormError({
+        payload: 'Only letters and numbers are allowed',
+      })
+    }
+
+    return isValid
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
