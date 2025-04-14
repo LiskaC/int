@@ -32,7 +32,12 @@ export const InputField: FC<Props> = (props) => (
         rounded-sm placeholder:text-green-700'
     />
     {props.error && (
-      <p id={`${props.id}-error`} className='text-red-900 ml-2 text-sm'>
+      <p
+        id={`${props.id}-error`}
+        data-testid={`${props.id}-error`}
+        aria-live='assertive'
+        className='text-red-900 ml-2 text-sm'
+      >
         {props.error.toLowerCase()}
       </p>
     )}

@@ -5,12 +5,15 @@ module.exports = {
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
-  setupFilesAfterEnv: ['@testing-library/jest-dom'],
+  setupFilesAfterEnv: [
+    '@testing-library/jest-dom',
+    '<rootDir>/__specs__/setupTests.ts',
+  ],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '^url:.*\\.(svg|png|jpg|jpeg)$': '<rootDir>/__specs__/mocks/fileMock.js',
+    '^url:.*\\.(svg|png|jpg|jpeg)$': '<rootDir>/__specs__/mocks/fileMock.ts',
   },
 }

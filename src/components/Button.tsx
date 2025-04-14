@@ -34,6 +34,6 @@ export const Button: FC<Props> = ({
          font-semibold'
   >
     {icon && <img src={icon} alt='button icon' className='pt-1 w-4 h-5' />}
-    <p>{text}</p>
+    <span>{text}</span>
   </button>
 )

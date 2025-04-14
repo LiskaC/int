@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import { useAppSelector } from '../../../store'
 
-import SUCCESS_ICON from 'url:../../../../assets/images/success.svg'
-import ERROR_ICON from 'url:../../../../assets/images/error.svg'
+import SUCCESS_ICON from 'url:../../../assets/images/success.svg'
+import ERROR_ICON from 'url:../../../assets/images/error.svg'
 
-export const ProcessCreateStatus: FC = () => {
+export const CreateResult: FC = () => {
   const create = useAppSelector((state) => state.hash.create)
 
   if (!create.data.payload || create.loading) {
@@ -13,7 +13,7 @@ export const ProcessCreateStatus: FC = () => {
 
   if (create.error) {
     return (
-      <ProcessCreateStatusView
+      <CreateResultView
         status='error'
         text={create.error}
         img={{ src: ERROR_ICON, alt: 'error-icon' }}
@@ -22,7 +22,7 @@ export const ProcessCreateStatus: FC = () => {
   }
 
   return (
-    <ProcessCreateStatusView
+    <CreateResultView
       status='success'
       text='Successfully started process to hash your payload'
       img={{ src: SUCCESS_ICON, alt: 'success-icon' }}
@@ -39,7 +39,7 @@ interface Props {
   }
 }
 
-const ProcessCreateStatusView: FC<Props> = (props) => (
+const CreateResultView: FC<Props> = (props) => (
   <div
     data-testid='process-create-status'
     id='process-create-status'

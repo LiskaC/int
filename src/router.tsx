@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { SuspenseWrapper } from './components/SuspenseWrapper'
 
-const HashPage = lazy(() => import('./state/features/hash/HashPage'))
+const HashPage = lazy(() => import('./features/hash/HashPage'))
 
 /**
  * Router configuration for the application

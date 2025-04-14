@@ -19,6 +19,7 @@ export type HashState = {
     id: string
   }>
   track: AsyncState<TrackProcessResponse | null>
+  polling: boolean
 }
 
 const initialState: HashState = {
@@ -35,6 +36,7 @@ const initialState: HashState = {
     loading: false,
     error: null,
   },
+  polling: false,
 }
 
 const hashSlice = createSlice({
@@ -76,6 +78,15 @@ const hashSlice = createSlice({
         state.track.error =
           action.error.message ||
           `'Failed to track status for process with id: ${state.create.data.id}`
+      })
+      .addCase(pollProcess.pending, (state) => {
+        state.polling = true
+      })
+      .addCase(pollProcess.fulfilled, (state) => {
+        state.polling = false
+      })
+      .addCase(pollProcess.rejected, (state) => {
+        state.polling = false
       })
   },
 })

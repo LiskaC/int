@@ -2,12 +2,13 @@ import { FC, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store'
 import { createProcess } from '../slice'
 import { CreateProcessPayload } from '../types'
-import { InputField } from '../../../../components/InputField'
-import { Button } from '../../../../components/Button'
+import { InputField } from '../../../components/InputField'
+import { Button } from '../../../components/Button'
 
-export const PayloadInput: FC = () => {
+export const HashForm: FC = () => {
   const dispatch = useAppDispatch()
   const loading = useAppSelector((state) => state.hash.create.loading)
+  const polling = useAppSelector((state) => state.hash.polling)
   const [formData, setFormData] = useState<CreateProcessPayload>({
     payload: '',
   })
@@ -42,11 +43,11 @@ export const PayloadInput: FC = () => {
   }
 
   return (
-    <PayloadInputView
+    <HashFormView
       payload={formData.payload}
       error={formError.payload}
       cta={loading ? 'creating...' : 'create hash'}
-      disabled={loading}
+      disabled={loading || polling}
       onChange={handleChange}
       onSubmit={handleSubmit}
     />
@@ -62,12 +63,12 @@ interface Props {
   onSubmit: (e: React.SyntheticEvent) => void
 }
 
-const PayloadInputView: FC<Props> = (props) => (
-  <section role='region' aria-labelledby='payload-form-header'>
-    <h1 id='payload-form-header' className='text-2xl'>
+const HashFormView: FC<Props> = (props) => (
+  <section role='region' aria-labelledby='hash-form-header'>
+    <h1 id='hash-form-header' className='text-2xl'>
       Get your hash
     </h1>
-    <form id='payload-form' onSubmit={props.onSubmit}>
+    <form id='hash-form' onSubmit={props.onSubmit}>
       <InputField
         id='payload-input'
         label='You can hash any arbitrary string. Provide a payload in the input below.'
@@ -79,12 +80,7 @@ const PayloadInputView: FC<Props> = (props) => (
         onChange={props.onChange}
         error={props.error}
       />
-      <Button
-        type='submit'
-        text={props.cta}
-        disabled={props.disabled}
-        ariaLabel='create hash'
-      />
+      <Button type='submit' text={props.cta} disabled={props.disabled} />
     </form>
   </section>
 )

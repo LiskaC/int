@@ -1,15 +1,15 @@
 import { FC } from 'react'
 import { useAppSelector } from '../../../store'
-import { Row } from '../../../../components/Row'
+import { Row } from '../../../components/Row'
 
-export const Result: FC = () => (
+export const TrackResult: FC = () => (
   <>
-    <HashResult />
+    <SuccessResult />
     <ErrorResult />
   </>
 )
 
-const HashResult: FC = () => {
+const SuccessResult: FC = () => {
   const hash = useAppSelector((state) => state.hash.track.data?.hash)
 
   if (!hash) {

@@ -1,15 +1,16 @@
 import { FC } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store'
 import { pollProcess } from '../slice'
-import { Button } from '../../../../components/Button'
+import { Button } from '../../../components/Button'
 
-import LOADER from 'url:../../../../assets/images/loader.svg'
+import LOADER from 'url:../../../assets/images/loader.svg'
 
 export const TrackCta: FC = () => {
   const dispatch = useAppDispatch()
   const process = useAppSelector((state) => state.hash.create.data.id)
   const { loading, data } = useAppSelector((state) => state.hash.track)
 
+  const polling = useAppSelector((state) => state.hash.polling)
   if (!process) {
     return null
   }
@@ -19,11 +20,11 @@ export const TrackCta: FC = () => {
   }
 
   return (
-    <TrackView
+    <TrackCtaView
       cta={{
         text: loading ? 'fetching...' : 'fetch',
         disabled:
-          loading || data?.status === 'completed' || data?.status === 'failed',
+          polling || data?.status === 'completed' || data?.status === 'failed',
         icon: LOADER,
       }}
       onClick={handleCLick}
@@ -40,7 +41,7 @@ interface Props {
   onClick: () => void
 }
 
-const TrackView: FC<Props> = (props) => (
+const TrackCtaView: FC<Props> = (props) => (
   <section
     role='region'
     aria-labelledby='track-header'
@@ -50,11 +51,10 @@ const TrackView: FC<Props> = (props) => (
       Track your status
     </h1>
     <Button
-      id='track-cta'
       text={props.cta.text}
       icon={props.cta.icon}
-      onClick={props.onClick}
       disabled={props.cta.disabled}
+      onClick={props.onClick}
     />
   </section>
 )
